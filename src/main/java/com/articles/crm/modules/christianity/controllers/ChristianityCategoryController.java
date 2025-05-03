@@ -32,4 +32,9 @@ public class ChristianityCategoryController {
     public List<ChristianityCategory> findAll() {
         return categoryService.findAll();
     }
+
+    @PutMapping("/bulk")
+    public List<ChristianityCategory> replaceAll(@RequestBody List<ChristianityCategory> categories) {
+        return categoryService.updateAllCategories(categories);
+    }
 }
