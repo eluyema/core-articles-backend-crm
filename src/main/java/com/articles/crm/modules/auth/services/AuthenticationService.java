@@ -39,19 +39,23 @@ public class AuthenticationService {
 
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         try {
-
+            System.out.println(                    request.getUsername() + " " + request.getPassword());
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getUsername(),
                     request.getPassword()
             ));
 
+
+
             var user = userService
                     .userDetailsService()
                     .loadUserByUsername(request.getUsername());
+            System.out.println(                   user.getUsername() + " " + user.getPassword() + " "+ user);
 
             var jwt = jwtService.generateToken(user);
             return new JwtAuthenticationResponse(jwt);
         } catch (BadCredentialsException e) {
+            System.out.println("Error: " + e.getMessage());
             throw new RuntimeException("Invalid username or password.");
         }
     }
