@@ -2,6 +2,7 @@ package com.articles.crm.modules.auth.controllers;
 
 import com.articles.crm.modules.auth.dtos.JwtAuthenticationResponse;
 import com.articles.crm.modules.auth.dtos.SignInRequest;
+import com.articles.crm.modules.auth.dtos.SignInRequestDTO;
 import com.articles.crm.modules.auth.dtos.SignUpRequest;
 import com.articles.crm.modules.auth.services.AuthenticationService;
 import jakarta.validation.Valid;
@@ -25,7 +26,8 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
-    public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request) {
+    public JwtAuthenticationResponse signIn(@RequestBody SignInRequestDTO request) {
+        // Manually binding username and password
         return authenticationService.signIn(request);
     }
 
