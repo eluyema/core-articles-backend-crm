@@ -22,4 +22,4 @@ jobs:
 
       - name: SSH into EC2 and run redeploy
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "bash ~/redeploy.sh"
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "bash ~/backend-redeploy.sh"
