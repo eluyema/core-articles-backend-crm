@@ -1,42 +1,30 @@
-package com.articles.crm.modules.christianity.services;
+package com.articles.crm.modules.christianity.useCases;
 
 import com.articles.crm.modules.christianity.entities.ChristianityCategory;
 import com.articles.crm.modules.christianity.entities.ChristianitySubcategory;
-import lombok.RequiredArgsConstructor;
+import com.articles.crm.modules.christianity.services.ChristianityCategoryRepository;
+import com.articles.crm.modules.christianity.services.ChristianitySubcategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class ChristianityCategoryService {
+public class UpdateAllChristianityCategoriesUseCase {
+
     private final ChristianityCategoryRepository categoryRepository;
+
+    // It can be avoided
     private final ChristianitySubcategoryRepository subcategoryRepository;
 
-    public ChristianityCategory create(ChristianityCategory category) {
-        return categoryRepository.save(category);
-    }
-
-    public ChristianityCategory update(Long id, ChristianityCategory updatedCategory) {
-        ChristianityCategory category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        category.setCode(updatedCategory.getCode());
-        return categoryRepository.save(category);
-    }
-
-    public void delete(Long id) {
-        categoryRepository.deleteById(id);
-    }
-
-    public List<ChristianityCategory> findAll() {
-        return categoryRepository.findAll();
+    public UpdateAllChristianityCategoriesUseCase(ChristianityCategoryRepository categoryRepository, ChristianitySubcategoryRepository subcategoryRepository) {
+        this.categoryRepository = categoryRepository;
+        this.subcategoryRepository = subcategoryRepository;
     }
 
     @Transactional
-    public List<ChristianityCategory> updateAllCategories(List<ChristianityCategory> newCategories) {
+    public List<ChristianityCategory> handle(List<ChristianityCategory> newCategories) {
         List<ChristianityCategory> existingCategories = categoryRepository.findAll();
         List<Long> receivedCategoryIds = newCategories.stream()
                 .map(ChristianityCategory::getId)
@@ -103,7 +91,4 @@ public class ChristianityCategoryService {
 
         return result;
     }
-
-
-
 }

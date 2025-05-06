@@ -20,5 +20,5 @@ public class ChristianityCategory {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<ChristianitySubcategory> subcategories = new ArrayList<>();;
+    private List<ChristianitySubcategory> subcategories = new ArrayList<>();
 }

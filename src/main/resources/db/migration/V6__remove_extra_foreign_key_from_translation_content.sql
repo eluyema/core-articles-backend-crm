@@ -1,0 +1,5 @@
+ALTER TABLE article_translation_content
+DROP CONSTRAINT fk_article_translation;
+
+ALTER TABLE article_translation_content
+DROP COLUMN article_translation_id;

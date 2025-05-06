@@ -1,40 +1,27 @@
 package com.articles.crm.modules.christianity.controllers;
 
 import com.articles.crm.modules.christianity.entities.ChristianityCategory;
-import com.articles.crm.modules.christianity.services.ChristianityCategoryService;
+import com.articles.crm.modules.christianity.useCases.GetChristianityCategoriesUseCase;
+import com.articles.crm.modules.christianity.useCases.UpdateAllChristianityCategoriesUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/christianity/categories")
+@RequestMapping(value ="/api/christianity/categories", produces = "application/json")
 @RequiredArgsConstructor
 public class ChristianityCategoryController {
-    private final ChristianityCategoryService categoryService;
-
-    @PostMapping
-    public ChristianityCategory create(@RequestBody ChristianityCategory category) {
-        return categoryService.create(category);
-    }
-
-    @PutMapping("/{id}")
-    public ChristianityCategory update(@PathVariable Long id, @RequestBody ChristianityCategory category) {
-        return categoryService.update(id, category);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        categoryService.delete(id);
-    }
+    private final GetChristianityCategoriesUseCase getChristianityCategoriesUseCase;
+    private final UpdateAllChristianityCategoriesUseCase updateAllCategoriesUseCase;
 
     @GetMapping
     public List<ChristianityCategory> findAll() {
-        return categoryService.findAll();
+        return getChristianityCategoriesUseCase.handle();
     }
 
     @PutMapping("/bulk")
     public List<ChristianityCategory> replaceAll(@RequestBody List<ChristianityCategory> categories) {
-        return categoryService.updateAllCategories(categories);
+        return updateAllCategoriesUseCase.handle(categories);
     }
 }
