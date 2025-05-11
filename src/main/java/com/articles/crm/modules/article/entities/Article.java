@@ -1,8 +1,12 @@
 package com.articles.crm.modules.article.entities;
 
+import com.articles.crm.modules.christianity.entities.ChristianityArticle;
 import com.articles.crm.modules.user.entities.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -16,10 +20,15 @@ import java.util.List;
 public class Article {
 
     @Id
+    @GeneratedValue
+    @JdbcTypeCode(SqlTypes.UUID)
     private UUID id;
 
     @Column(nullable = false, unique = true, length = 255)
     private String slug;
+
+    @OneToOne(mappedBy = "article")
+    private ChristianityArticle christianityArticle;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)

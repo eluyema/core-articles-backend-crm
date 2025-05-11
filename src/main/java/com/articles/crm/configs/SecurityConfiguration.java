@@ -49,9 +49,10 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         };
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

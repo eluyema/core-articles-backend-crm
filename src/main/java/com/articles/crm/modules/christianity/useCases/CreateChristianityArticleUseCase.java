@@ -8,9 +8,11 @@ import com.articles.crm.modules.christianity.entities.ChristianityArticle;
 import com.articles.crm.modules.christianity.entities.ChristianitySubcategory;
 import com.articles.crm.modules.christianity.services.ChristianityArticleRepository;
 import com.articles.crm.modules.christianity.services.ChristianitySubcategoryRepository;
+import com.articles.crm.modules.image.useCases.AttachImagesToArticleUseCase;
 import com.articles.crm.modules.user.entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -18,20 +20,25 @@ import java.util.UUID;
 public class CreateChristianityArticleUseCase {
     private final ChristianityArticleRepository christianityArticleRepository;
     private final ChristianitySubcategoryRepository christianitySubcategoryRepository;
+    private final AttachImagesToArticleUseCase attachImagesToArticleUseCase;
 
-    public CreateChristianityArticleUseCase(ChristianityArticleRepository christianityArticleRepository, ChristianitySubcategoryRepository christianitySubcategoryRepository) {
+    public CreateChristianityArticleUseCase(ChristianityArticleRepository christianityArticleRepository,
+                                            ChristianitySubcategoryRepository christianitySubcategoryRepository,
+                                            AttachImagesToArticleUseCase attachImagesToArticleUseCase
+                                            ) {
         this.christianityArticleRepository = christianityArticleRepository;
         this.christianitySubcategoryRepository = christianitySubcategoryRepository;
+        this.attachImagesToArticleUseCase = attachImagesToArticleUseCase;
     }
 
+    @Transactional
     public ChristianityArticle handle(User author, CreateChristianityArticle dto) throws Exception {
         Article article = new Article();
-        article.setId(UUID.randomUUID());
         article.setAuthor(author);
         article.setSlug(dto.getSlug());
 
+
         ArticleTranslation translation = new ArticleTranslation();
-        translation.setId(UUID.randomUUID());
         translation.setArticle(article);
         translation.setLanguage(dto.getLanguage());
         translation.setTitle(dto.getTitle());
@@ -42,7 +49,6 @@ public class CreateChristianityArticleUseCase {
 
         var content = new ArticleTranslationContent();
 
-        content.setId(UUID.randomUUID());
         content.setContent(dto.getContent());
         content.setArticleTranslation(translation);
 
@@ -59,8 +65,12 @@ public class CreateChristianityArticleUseCase {
 
         christianityArticle.setSubcategory(christianitySubcategoryRepository.findById(dto.getSubcategoryId()).orElse(null));
         christianityArticle.setArticle(article);
-        christianityArticle.setId(UUID.randomUUID());
+        christianityArticle.setActive(dto.getActive());
 
-        return christianityArticleRepository.save(christianityArticle);
+        ChristianityArticle newArticle = christianityArticleRepository.save(christianityArticle);
+
+        attachImagesToArticleUseCase.handle(dto.getAddedImageUrls(), article.getId());
+
+        return newArticle;
     }
 }

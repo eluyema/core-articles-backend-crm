@@ -19,8 +19,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ChristianArticleFullDetails {
     private UUID id;
-    private String categoryCode;
-    private String subcategoryCode;
+    private String category;
+    private String subcategory;
+    private Boolean active;
     private String slug;
     private UserDetailsDto author;
     private String updatedAt;
@@ -30,8 +31,9 @@ public class ChristianArticleFullDetails {
         ChristianArticleFullDetails articleDTO = new ChristianArticleFullDetails();
 
         articleDTO.setId(christianityArticle.getId());
-        articleDTO.setCategoryCode(christianityArticle.getSubcategory().getCode());
-        articleDTO.setSubcategoryCode(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setCategory(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setSubcategory(christianityArticle.getSubcategory().getCode());
+        articleDTO.setActive(christianityArticle.getActive());
 
         Article article = christianityArticle.getArticle();
 

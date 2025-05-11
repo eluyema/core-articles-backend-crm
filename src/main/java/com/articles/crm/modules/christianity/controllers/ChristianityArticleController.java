@@ -23,6 +23,8 @@ public class ChristianityArticleController {
     private final GetFullChristianityArticleUseCase getFullChristianityArticleUseCase;
     private final AddChristianArticleTranslationUseCase addChristianArticleTranslationUseCase;
     private final UpdateChristianArticleTranslationUseCase updateChristianArticleTranslationUseCase;
+    private final UpdateChristianArticleUseCase updateChristianArticleUseCase;
+
     public ChristianityArticleController(
                                          CreateChristianityArticleUseCase createChristianityArticleUseCase,
                                          DeleteChristianityArticleUseCase deleteChristianityArticleUseCase,
@@ -32,7 +34,8 @@ public class ChristianityArticleController {
                                          DeleteChristianityArticleTranslationUseCase deleteChristianityArticleTranslationUseCase,
                                          GetFullChristianityArticleUseCase getFullChristianityArticleUseCase,
                                          AddChristianArticleTranslationUseCase addChristianArticleTranslationUseCase,
-                                         UpdateChristianArticleTranslationUseCase updateChristianArticleTranslationUseCase
+                                         UpdateChristianArticleTranslationUseCase updateChristianArticleTranslationUseCase,
+                                         UpdateChristianArticleUseCase updateChristianArticleUseCase
                                          ) {
         this.createChristianityArticleUseCase =  createChristianityArticleUseCase;
         this.deleteChristianityArticleUseCase = deleteChristianityArticleUseCase;
@@ -42,6 +45,7 @@ public class ChristianityArticleController {
         this.deleteChristianityArticleTranslationUseCase = deleteChristianityArticleTranslationUseCase;
         this.getFullChristianityArticleUseCase = getFullChristianityArticleUseCase;
         this.addChristianArticleTranslationUseCase = addChristianArticleTranslationUseCase;
+        this.updateChristianArticleUseCase = updateChristianArticleUseCase;
         this.updateChristianArticleTranslationUseCase = updateChristianArticleTranslationUseCase;
     }
 
@@ -93,6 +97,14 @@ public class ChristianityArticleController {
         ChristianArticleFullDetails article = getFullChristianityArticleUseCase.handle(slug);
 
         return ResponseEntity.ok(mapper.writeValueAsString(article));
+    }
+
+    @PutMapping("/articles/{slug}")
+    public ResponseEntity<String> updateArticle(@PathVariable final String slug,
+                                                    @RequestBody final UpdateChristianityArticle article
+    ) throws Exception {
+        updateChristianArticleUseCase.handle(slug, article);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/articles/{slug}")

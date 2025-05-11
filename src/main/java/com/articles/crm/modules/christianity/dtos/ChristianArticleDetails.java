@@ -19,9 +19,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ChristianArticleDetails {
     private UUID id;
-    private String categoryCode;
-    private String subcategoryCode;
+    private String category;
+    private String subcategory;
     private String slug;
+    private Boolean active;
     private UserDetailsDto author;
     private String updatedAt;
     private List<ArticleTranslationDetails> translations = new ArrayList<>();
@@ -30,8 +31,8 @@ public class ChristianArticleDetails {
         ChristianArticleDetails articleDTO = new ChristianArticleDetails();
 
         articleDTO.setId(christianityArticle.getId());
-        articleDTO.setCategoryCode(christianityArticle.getSubcategory().getCode());
-        articleDTO.setSubcategoryCode(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setCategory(christianityArticle.getSubcategory().getCode());
+        articleDTO.setSubcategory(christianityArticle.getSubcategory().getCategory().getCode());
 
         Article article = christianityArticle.getArticle();
 
@@ -57,7 +58,7 @@ public class ChristianArticleDetails {
             translationDTO.setPreviewImageUrl(translation.getPreviewImageUrl());
             return translationDTO;
         }).toList());
-
+        articleDTO.setActive(christianityArticle.getActive());
         return articleDTO;
     }
 }
