@@ -16,4 +16,5 @@ public class CreateChristianityArticleTranslation {
     private String previewImageAlt;
     private String previewBlurImageImageUrl;
     private String content;
+    private List<String> addedImageUrls;
 }

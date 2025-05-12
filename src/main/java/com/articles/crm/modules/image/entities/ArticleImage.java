@@ -1,5 +1,6 @@
 package com.articles.crm.modules.image.entities;
 
+import com.articles.crm.modules.article.entities.ArticleTranslation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "uploaded_article_images")
+@Table(name = "uploaded_article_translation_images")
 @Setter
 @Getter
 public class ArticleImage {
@@ -25,8 +26,9 @@ public class ArticleImage {
     @Column(name = "size", nullable = false)
     private long size;
 
-    @Column(name = "article_id")
-    private UUID articleId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_translation_id", nullable = true)
+    private ArticleTranslation articleTranslation;
 
     public ArticleImage() {}
 

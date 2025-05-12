@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class CreateChristianityArticle {
-    private Long subcategoryId;
+    private String subcategory;
     private String slug;
     private Boolean active;
     private String language;

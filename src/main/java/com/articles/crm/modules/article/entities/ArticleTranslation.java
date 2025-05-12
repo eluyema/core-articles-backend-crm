@@ -1,12 +1,17 @@
 package com.articles.crm.modules.article.entities;
+import com.articles.crm.modules.image.entities.ArticleImage;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
 @Entity
@@ -55,6 +60,10 @@ public class ArticleTranslation {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "articleTranslation", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private List<ArticleImage> images = new ArrayList<>();
 
     public void addContent(String content) {
         ArticleTranslationContent articleTranslationContent = new ArticleTranslationContent();

@@ -43,16 +43,6 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleTranslation> translations = new ArrayList<>();
 
-    public void addTranslation(ArticleTranslation translation) {
-        String lang = translation.getLanguage();
-
-        if(this.translations.contains(translation)) {
-            throw new IllegalArgumentException("Translation with lang '"+ lang +"' already exists");
-        }
-
-        this.translations.add(translation);
-    }
-
     @PrePersist
     public void onCreate() {
         this.createdAt = this.updatedAt = LocalDateTime.now();
