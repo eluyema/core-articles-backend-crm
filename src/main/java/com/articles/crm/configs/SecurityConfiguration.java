@@ -31,18 +31,23 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
+    private final ClientSecretFilter clientSecretFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling(exception-> exception.authenticationEntryPoint(authenticationEntryPoint()))
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
-                .authenticationProvider(authenticationProvider())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint((req, res, ex) -> {
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                }))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**","/api/christianity/client/**").permitAll() // no JWT auth here, we use secret
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(clientSecretFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
 

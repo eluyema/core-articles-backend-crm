@@ -31,8 +31,8 @@ public class ChristianArticleDetails {
         ChristianArticleDetails articleDTO = new ChristianArticleDetails();
 
         articleDTO.setId(christianityArticle.getId());
-        articleDTO.setCategory(christianityArticle.getSubcategory().getCode());
-        articleDTO.setSubcategory(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setCategory(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setSubcategory(christianityArticle.getSubcategory().getCode());
 
         Article article = christianityArticle.getArticle();
 

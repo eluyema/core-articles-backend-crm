@@ -57,8 +57,8 @@ public class ChristianityArticleController {
     }
 
     @GetMapping("/articles")
-    public ResponseEntity<String> getAllArticles() throws Exception {
-        List<ChristianArticleDetails> articleDTOs = getChristianityArticlesUseCase.handle();
+    public ResponseEntity<String> getAllArticles(@RequestParam(name = "category", required = false) String category, @RequestParam(name = "subcategory", required = false) String subcategory) throws Exception {
+        List<ChristianArticleDetails> articleDTOs = getChristianityArticlesUseCase.handle(category, subcategory);
 
         return ResponseEntity.ok(mapper.writeValueAsString(articleDTOs));
     }

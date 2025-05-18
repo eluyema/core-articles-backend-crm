@@ -15,8 +15,17 @@ public class GetChristianityArticlesUseCase {
         this.christianityArticleRepository = christianityArticleRepository;
     }
 
-    public List<ChristianArticleDetails> handle() {
-        var articles = christianityArticleRepository.findAll();
+    public List<ChristianArticleDetails> handle(String category, String subcategory) {
+        List<ChristianityArticle> articles = null;
+
+        if(subcategory != null) {
+            articles =  christianityArticleRepository.findBySubcategory_Code(subcategory);
+        } else if (category != null) {
+            articles = christianityArticleRepository.findBySubcategory_Category_Code(category);
+        } else {
+            articles = christianityArticleRepository.findAll();
+        }
+
         return articles.stream().map(ChristianArticleDetails::fromEntity).toList();
     }
 }

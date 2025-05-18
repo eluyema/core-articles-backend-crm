@@ -27,4 +27,8 @@ public interface ChristianityArticleRepository extends JpaRepository<Christianit
     Optional<ChristianityArticle> findByArticle_Slug(String slug);
 
     void deleteByArticle_Slug(String slug);
+
+    List<ChristianityArticle> findBySubcategory_Category_Code(String categoryCode);
+
+    List<ChristianityArticle> findBySubcategory_Code(String subcategoryCode);
 }

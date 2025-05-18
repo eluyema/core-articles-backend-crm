@@ -27,8 +27,8 @@ public class GetChristianityArticleTranslationUseCase {
         ChristianArticleTranslationData articleDTO = new ChristianArticleTranslationData();
 
         articleDTO.setId(christianityArticle.getId());
-        articleDTO.setCategory(christianityArticle.getSubcategory().getCode());
-        articleDTO.setSubcategory(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setCategory(christianityArticle.getSubcategory().getCategory().getCode());
+        articleDTO.setSubcategory(christianityArticle.getSubcategory().getCode());
 
         Article article = christianityArticle.getArticle();
 
