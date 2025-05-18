@@ -14,7 +14,8 @@ public interface ChristianityArticleRepository extends JpaRepository<Christianit
         art.language,
         a.slug,
         cc.code,
-        cs.code
+        cs.code,
+        ca.active
     )
     FROM ChristianityArticle ca
     JOIN ca.article a

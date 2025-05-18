@@ -14,4 +14,5 @@ public class DbChristianArticlePath {
     private String slug;
     private String category;
     private String subcategory;
+    private Boolean active;
 }
