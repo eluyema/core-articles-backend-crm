@@ -10,8 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChristianArticlePath {
+    private String language;
+    private String slug;
     private String category;
     private String subcategory;
-    private String slug;
-    private String language;
 }
