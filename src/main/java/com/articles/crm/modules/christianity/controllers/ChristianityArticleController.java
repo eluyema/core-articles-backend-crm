@@ -24,6 +24,7 @@ public class ChristianityArticleController {
     private final AddChristianArticleTranslationUseCase addChristianArticleTranslationUseCase;
     private final UpdateChristianArticleTranslationUseCase updateChristianArticleTranslationUseCase;
     private final UpdateChristianArticleUseCase updateChristianArticleUseCase;
+    private final TranslateArticleUseCase translateArticleUseCase;
 
     public ChristianityArticleController(
                                          CreateChristianityArticleUseCase createChristianityArticleUseCase,
@@ -35,7 +36,8 @@ public class ChristianityArticleController {
                                          GetFullChristianityArticleUseCase getFullChristianityArticleUseCase,
                                          AddChristianArticleTranslationUseCase addChristianArticleTranslationUseCase,
                                          UpdateChristianArticleTranslationUseCase updateChristianArticleTranslationUseCase,
-                                         UpdateChristianArticleUseCase updateChristianArticleUseCase
+                                         UpdateChristianArticleUseCase updateChristianArticleUseCase,
+                                         TranslateArticleUseCase translateArticleUseCase
                                          ) {
         this.createChristianityArticleUseCase =  createChristianityArticleUseCase;
         this.deleteChristianityArticleUseCase = deleteChristianityArticleUseCase;
@@ -47,6 +49,7 @@ public class ChristianityArticleController {
         this.addChristianArticleTranslationUseCase = addChristianArticleTranslationUseCase;
         this.updateChristianArticleUseCase = updateChristianArticleUseCase;
         this.updateChristianArticleTranslationUseCase = updateChristianArticleTranslationUseCase;
+        this.translateArticleUseCase = translateArticleUseCase;
     }
 
     @PostMapping("/articles")
@@ -89,6 +92,12 @@ public class ChristianityArticleController {
                                                  @RequestBody final UpdateChristianityArticleTranslation translation
     ) throws Exception {
         updateChristianArticleTranslationUseCase.handle(slug, language,translation);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/translations/{slug}/{language}/translateAll")
+    public ResponseEntity<String> translateAll(@PathVariable final String slug, @PathVariable final String language) throws Exception {
+        translateArticleUseCase.handle(slug, language);
         return ResponseEntity.ok().build();
     }
 
