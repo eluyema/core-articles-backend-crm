@@ -39,7 +39,7 @@ public class GeminiTranslator {
     }
 
     @Retryable(
-            value = RuntimeException.class,
+            value = {Exception.class},
             maxAttempts = 3,
             backoff = @Backoff(delay = 2000, multiplier = 2)
     )
