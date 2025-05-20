@@ -15,4 +15,6 @@ public class ChristianArticlePath {
     private String category;
     private String subcategory;
     private Boolean active;
+    private String createdAt;
+    private String updatedAt;
 }

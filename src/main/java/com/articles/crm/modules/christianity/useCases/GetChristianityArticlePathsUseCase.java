@@ -17,6 +17,13 @@ public class GetChristianityArticlePathsUseCase {
         var dbPaths = christianityArticleRepository.fetchArticlePaths();
 
         return dbPaths.stream().map(path ->
-                new ChristianArticlePath(path.getLanguage(), path.getSlug(), path.getCategory(), path.getSubcategory(), path.getActive())).toList();
+                new ChristianArticlePath(path.getLanguage(),
+                        path.getSlug(),
+                        path.getCategory(),
+                        path.getSubcategory(),
+                        path.getActive(),
+                        path.getCreatedAt().toString(),
+                        path.getUpdatedAt().toString()
+                )).toList();
     }
 }
