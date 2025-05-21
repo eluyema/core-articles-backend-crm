@@ -65,7 +65,7 @@ public class TranslateArticleUseCase {
         root.set("content", mapper.readTree(content));
 
         for(String language : newTranslationLanguages) {
-            JsonNode translatedRoot = mapper.readTree(translator.translateJson(root.toString(), originalLanguage, language));
+            JsonNode translatedRoot = translator.translateJson(root.toString(), originalLanguage, language);
 
             String translatedTitle = translatedRoot.get("title").asText();
             String translatedDescription = translatedRoot.get("description").asText();
@@ -89,7 +89,7 @@ public class TranslateArticleUseCase {
         }
 
         for(ArticleTranslation existingTranslation : existingTranslations) {
-            JsonNode translatedRoot = mapper.readTree(translator.translateJson(root.toString(), originalLanguage, existingTranslation.getLanguage()));
+            JsonNode translatedRoot =translator.translateJson(root.toString(), originalLanguage, existingTranslation.getLanguage());
 
             String translatedTitle = translatedRoot.get("title").asText();
             String translatedDescription = translatedRoot.get("description").asText();
