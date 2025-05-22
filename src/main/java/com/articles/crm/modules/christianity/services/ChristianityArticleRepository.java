@@ -4,6 +4,7 @@ import com.articles.crm.modules.christianity.dbProjections.DbChristianArticlePat
 import com.articles.crm.modules.christianity.entities.ChristianityArticle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,4 +35,17 @@ public interface ChristianityArticleRepository extends JpaRepository<Christianit
     List<ChristianityArticle> findBySubcategory_Category_Code(String categoryCode);
 
     List<ChristianityArticle> findBySubcategory_Code(String subcategoryCode);
+
+    @Query(value = """
+        SELECT ca.*
+        FROM christianity_articles ca
+        JOIN articles a ON ca.article_id = a.id
+        JOIN christianity_subcategory cs ON ca.subcategory_id = cs.id
+        JOIN christianity_category cc ON cs.category_id = cc.id
+        WHERE cc.code = :category and ca.active = true
+        ORDER BY RANDOM()
+        LIMIT :limit
+""", nativeQuery = true)
+    List<ChristianityArticle> findRandomByCategory(@Param("category") String category, @Param("limit") int limit);
+
 }

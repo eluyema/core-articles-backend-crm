@@ -18,16 +18,20 @@ public class ClientChristianityArticleController {
     private final GetChristianityArticlePathsUseCase getChristianityArticlePathsUseCase;
     private final GetChristianityArticlesUseCase getChristianityArticlesUseCase;
     private final GetFullChristianityArticleUseCase getFullChristianityArticleUseCase;
+    private final GetChristianityArticlesRecommendationUseCase getChristianityArticlesRecommendationUseCase;
+
     public ClientChristianityArticleController(
                                          GetChristianityArticleTranslationUseCase getChristianityArticleTranslationUseCase,
                                          GetChristianityArticlePathsUseCase getChristianityArticlePathsUseCase,
                                          GetChristianityArticlesUseCase getChristianityArticlesUseCase,
-                                         GetFullChristianityArticleUseCase getFullChristianityArticleUseCase
+                                         GetFullChristianityArticleUseCase getFullChristianityArticleUseCase,
+                                         GetChristianityArticlesRecommendationUseCase getChristianityArticlesRecommendationUseCase
                                          ) {
         this.getChristianityArticleTranslationUseCase = getChristianityArticleTranslationUseCase;
         this.getChristianityArticlePathsUseCase = getChristianityArticlePathsUseCase;
         this.getChristianityArticlesUseCase = getChristianityArticlesUseCase;
         this.getFullChristianityArticleUseCase = getFullChristianityArticleUseCase;
+        this.getChristianityArticlesRecommendationUseCase = getChristianityArticlesRecommendationUseCase;
     }
 
     @GetMapping("/articles")
@@ -57,5 +61,15 @@ public class ClientChristianityArticleController {
         ChristianArticleFullDetails article = getFullChristianityArticleUseCase.handle(slug);
 
         return ResponseEntity.ok(mapper.writeValueAsString(article));
+    }
+
+    @GetMapping("/article/recommendations")
+    public ResponseEntity<String> getArticleRecommendations(
+            @RequestParam(name = "category") String category,
+            @RequestParam(name = "limit", required = false, defaultValue = "5") Integer limit
+    ) throws Exception {
+        List<ChristianArticleDetails> articleDTOs = getChristianityArticlesRecommendationUseCase.handle(category, limit);
+
+        return ResponseEntity.ok(mapper.writeValueAsString(articleDTOs));
     }
 }
