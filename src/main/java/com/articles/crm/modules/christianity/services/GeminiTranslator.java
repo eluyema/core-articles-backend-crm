@@ -39,7 +39,7 @@ public class GeminiTranslator {
 
     @Retryable(
             value = {Exception.class},
-            maxAttempts = 3,
+            maxAttempts = 6,
             backoff = @Backoff(delay = 2000, multiplier = 2)
     )
     public JsonNode translateJson(String json, String originalLanguage, String targetLanguage) {
@@ -73,7 +73,7 @@ public class GeminiTranslator {
                             "temperature", 0.2,
                             "topK", 1,
                             "topP", 1.0,
-                            "maxOutputTokens", 40000,
+                            "maxOutputTokens", 60000,
                             "responseMimeType", "application/json"
                     )
             );
