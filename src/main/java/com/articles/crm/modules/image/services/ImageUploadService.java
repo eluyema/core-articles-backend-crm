@@ -25,7 +25,7 @@ public class ImageUploadService {
     }
 
     public String uploadImage(MultipartFile file) throws IOException {
-        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        String fileName = UUID.randomUUID().toString();
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
