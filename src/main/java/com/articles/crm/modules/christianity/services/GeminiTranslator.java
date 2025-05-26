@@ -73,7 +73,7 @@ public class GeminiTranslator {
                             "temperature", 0.2,
                             "topK", 1,
                             "topP", 1.0,
-                            "maxOutputTokens", 4096,
+                            "maxOutputTokens", 40000,
                             "responseMimeType", "application/json"
                     )
             );
