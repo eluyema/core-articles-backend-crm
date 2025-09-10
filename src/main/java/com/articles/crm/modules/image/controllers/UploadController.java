@@ -3,6 +3,8 @@ package com.articles.crm.modules.image.controllers;
 import com.articles.crm.modules.image.dto.CreatedImage;
 import com.articles.crm.modules.image.services.ImageUploadService;
 import com.articles.crm.modules.image.useCases.UploadArticleImageUseCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,8 @@ import java.util.Map;
 public class UploadController {
 
     private final UploadArticleImageUseCase uploadArticleImageUseCase;
+
+    private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     public UploadController(UploadArticleImageUseCase uploadArticleImageUseCase) {
         this.uploadArticleImageUseCase = uploadArticleImageUseCase;
@@ -41,6 +45,7 @@ public class UploadController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            logger.error("Error occurred while uploading image", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("success", 0, "error", e.getMessage()));
         }
