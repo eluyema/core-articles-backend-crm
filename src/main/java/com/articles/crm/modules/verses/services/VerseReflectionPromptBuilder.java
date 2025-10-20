@@ -7,8 +7,9 @@ public class VerseReflectionPromptBuilder {
 
     public String systemPromptForJson(String language) {
         return """
-               You are a concise Christian content writer. Output must be STRICT JSON (no markdown, no code fences, no commentary).
-               Write in the target language: %s.
+               You are an insightful Christian content writer who creates spiritually deep, SEO-optimized reflections.
+               Output must be STRICT JSON (no markdown, no code fences, no commentary).
+               Write naturally and emotionally in the target language: %s.
                """.formatted(language);
     }
 
@@ -16,9 +17,8 @@ public class VerseReflectionPromptBuilder {
                                     String reference,
                                     String translationName,
                                     String language) {
-        // We ask the model to produce only the fields we expect.
         return """
-               Create a short reflection article **and** SEO metadata for a post page about this Bible verse.
+               Create a long, inspiring reflection article **and** full SEO metadata for a blog post about this Bible verse.
 
                Verse text: "%s"
                Reference: %s
@@ -27,22 +27,28 @@ public class VerseReflectionPromptBuilder {
 
                Return STRICT JSON with this exact structure:
                {
-                 "contentHtml": "<article>...</article>",    // Valid HTML body only. Must include: <article> root, one <h1>, one <h2>, 2–4 <p>, one <strong> emphasized phrase, end with a single-sentence practical application.
+                 "contentHtml": "<article>...</article>",    // Valid HTML only. Must include: <article> root, one <h1>, two <h2> sections, 6–10 <p> paragraphs, at least one <ul> or <ol> list (key lessons or takeaways), one <blockquote> with a meaningful phrase from the reflection, one <strong> emphasized statement, and end with a clear practical takeaway or short prayer.
                  "metadata": {
-                   "title": "string",            // readable page title (can mirror H1)
-                   "description": "string",      // 150–160 chars SEO description
+                   "title": "string",            // readable SEO-friendly title (can mirror H1)
+                   "description": "string",      // 150–160-char meta description
                    "canonical": "string",        // canonical path or absolute URL
-                   "keywords": ["string", ...],  // 5–10 concise terms
+                   "keywords": ["string", ...],  // 8–12 relevant search terms
                    "ogTitle": "string",          // Open Graph title
-                   "ogDescription": "string"     // Open Graph description (<= 200 chars)
+                   "ogDescription": "string"     // ≤200-char Open Graph description
                  }
                }
 
                Constraints:
-               - 170–260 words in total inside contentHtml.
+               - 700–1000 words total inside contentHtml for SEO depth.
                - Use the reference once in <h1> or first <p>.
-               - No external links, no images, no scripts, no inline CSS.
-               - Output ONLY the JSON object; no extra text before or after.
+               - Use descriptive subheadings (<h2>) to divide sections (e.g., "Context and Meaning", "Modern Application").
+               - Include at least one <ul> or <ol> list with practical lessons or reflection points.
+               - Include one <blockquote> with a memorable or poetic insight.
+               - Include <strong> to emphasize a central truth or call to action.
+               - Keep tone warm, faithful, and devotional but well-researched.
+               - Avoid repetition; keep paragraphs short (2–4 sentences).
+               - No external links, scripts, or inline CSS.
+               - Output ONLY the JSON object; no extra text or commentary.
                """.formatted(escape(verseText), reference, translationName, language);
     }
 
