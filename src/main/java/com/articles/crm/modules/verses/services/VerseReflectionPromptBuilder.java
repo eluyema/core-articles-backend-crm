@@ -56,7 +56,7 @@ public class VerseReflectionPromptBuilder {
 
     private static String escape(String s) {
         if (s == null) return "";
-
+        // Escape double quotes, backslashes, and control chars that break JSON
         return s
                 .replace("\\", "\\\\")
                 .replace("\"", "\\\"")
