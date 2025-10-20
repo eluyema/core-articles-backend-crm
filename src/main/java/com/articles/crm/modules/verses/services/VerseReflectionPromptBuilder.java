@@ -7,9 +7,10 @@ public class VerseReflectionPromptBuilder {
 
     public String systemPromptForJson(String language) {
         return """
-               You are an insightful Christian content writer who creates spiritually deep, SEO-optimized reflections.
-               Output must be STRICT JSON (no markdown, no code fences, no commentary).
-               Write naturally and emotionally in the target language: %s.
+               You are an insightful Christian content writer who produces spiritually deep, SEO-optimized reflections.
+               Output must be STRICT VALID JSON — parsable by standard JSON parsers with no syntax errors.
+               Use correct escaping for quotes (\\"), backslashes (\\\\), and line breaks (\\n).
+               Write naturally in the target language: %s.
                """.formatted(language);
     }
 
@@ -25,34 +26,41 @@ public class VerseReflectionPromptBuilder {
                Translation: %s
                Language: %s
 
-               Return STRICT JSON with this exact structure:
+               Return STRICT VALID JSON with this exact structure:
                {
-                 "contentHtml": "<article>...</article>",    // Valid HTML only. Must include: <article> root, one <h1>, two <h2> sections, 6–10 <p> paragraphs, at least one <ul> or <ol> list (key lessons or takeaways), one <blockquote> with a meaningful phrase from the reflection, one <strong> emphasized statement, and end with a clear practical takeaway or short prayer.
+                 "contentHtml": "<article>...</article>",    
                  "metadata": {
-                   "title": "string",            // readable SEO-friendly title (can mirror H1)
-                   "description": "string",      // 150–160-char meta description
-                   "canonical": "string",        // canonical path or absolute URL
-                   "keywords": ["string", ...],  // 8–12 relevant search terms
-                   "ogTitle": "string",          // Open Graph title
-                   "ogDescription": "string"     // ≤200-char Open Graph description
+                   "title": "string",            
+                   "description": "string",      
+                   "canonical": "string",        
+                   "keywords": ["string", ...],  
+                   "ogTitle": "string",          
+                   "ogDescription": "string"     
                  }
                }
 
-               Constraints:
-               - 700–1000 words total inside contentHtml for SEO depth.
-               - Use the reference once in <h1> or first <p>.
-               - Use descriptive subheadings (<h2>) to divide sections (e.g., "Context and Meaning", "Modern Application").
-               - Include at least one <ul> or <ol> list with practical lessons or reflection points.
-               - Include one <blockquote> with a memorable or poetic insight.
-               - Include <strong> to emphasize a central truth or call to action.
-               - Keep tone warm, faithful, and devotional but well-researched.
-               - Avoid repetition; keep paragraphs short (2–4 sentences).
-               - No external links, scripts, or inline CSS.
-               - Output ONLY the JSON object; no extra text or commentary.
+               Content rules:
+               - <article> must include one <h1>, two <h2>, 6–10 <p>, one <ul> or <ol>, one <blockquote>, one <strong>.
+               - 700–1000 words total for SEO depth.
+               - End with a clear, practical spiritual takeaway or short prayer.
+               - Use descriptive <h2> subheadings like “Context and Meaning”, “Modern Application”.
+               - Keep paragraphs 2–4 sentences each; no inline CSS or scripts.
+
+               JSON rules:
+               - Escape all internal double quotes (\\"), backslashes (\\\\), and line breaks (\\n) in all string values.
+               - Ensure every key and value is properly quoted.
+               - Output ONLY the JSON object, no markdown, commentary, or text outside the braces.
+               - Validate that your JSON can be parsed by a standard JSON parser before finishing.
                """.formatted(escape(verseText), reference, translationName, language);
     }
 
     private static String escape(String s) {
-        return s == null ? "" : s.replace("\"", "\\\""); // escape for JSON
+        if (s == null) return "";
+
+        return s
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\n");
     }
 }
