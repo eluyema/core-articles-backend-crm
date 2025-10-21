@@ -440,7 +440,6 @@ public class VerseReflectionPromptBuilder {
                - Include exactly one <blockquote> and at least one list (<ul> or <ol>).
                - Include exactly one <strong> emphasized statement.
                - No external links, scripts, or inline CSS.
-               - Escape internal quotes (\\") and backslashes (\\\\) and newlines (\\n) inside JSON strings.
                - Output ONLY the JSON object, no markdown or commentary outside the braces.
                """.formatted(escape(verseText), reference, translationName, language, structureRules);
     }
